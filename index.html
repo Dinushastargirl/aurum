@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AURUM STUDIO | Premium Salon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary-blue': '#1E7A8A',
+              'dark-bg': '#2E2E2E',
+              'gold-accent': '#D4AF37',
+              'gold-light': '#E5C76B',
+              'salon-white': '#FFFFFF',
+            },
+            fontFamily: {
+              serif: ['"Cormorant Garamond"', 'serif'],
+              sans: ['Montserrat', 'sans-serif'],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #2E2E2E;
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        overflow-x: hidden;
+      }
+      .font-serif {
+        font-family: 'Cormorant Garamond', serif;
+      }
+      /* Custom selection color */
+      ::selection {
+        background: #D4AF37;
+        color: #2E2E2E;
+      }
+      /* Hide cursor on desktop for custom brush experience */
+      @media (min-width: 1024px) {
+        body, a, button, [role="button"] {
+          cursor: none !important;
+        }
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1a1a1a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #D4AF37;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #E5C76B;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "framer-motion": "https://esm.sh/framer-motion@^12.34.0",
+    "next/": "https://esm.sh/next@^16.1.6/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
