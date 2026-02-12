@@ -8,6 +8,7 @@ interface Splash {
   id: number;
   x: number;
   y: number;
+  color: string;
 }
 
 const CursorEffects: React.FC = () => {
@@ -17,9 +18,7 @@ const CursorEffects: React.FC = () => {
   const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -34,14 +33,11 @@ const CursorEffects: React.FC = () => {
 
     const handleMouseDown = (e: MouseEvent) => {
       setIsClicking(true);
-      const newSplash = {
-        id: Date.now(),
-        x: e.clientX,
-        y: e.clientY,
-      };
+      const color = Math.random() > 0.5 ? '#D4AF37' : '#1E7A8A';
+      const newSplash = { id: Date.now(), x: e.clientX, y: e.clientY, color };
+      
       setSplashes((prev) => [...prev, newSplash]);
       
-      // Cleanup splash after animation
       setTimeout(() => {
         setSplashes((prev) => prev.filter((s) => s.id !== newSplash.id));
       }, 1000);
@@ -63,66 +59,57 @@ const CursorEffects: React.FC = () => {
   if (isMobile) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[9999]">
-      {/* Custom Brush Cursor */}
-      <motion.div
-        className="fixed top-0 left-0 w-8 h-8 flex items-center justify-center text-gold-accent"
-        animate={{
-          x: mousePos.x - 16,
-          y: mousePos.y - 16,
-          scale: isClicking ? 0.8 : 1,
-          rotate: isClicking ? -15 : 0,
-        }}
-        transition={{ type: 'spring', damping: 25, stiffness: 400, mass: 0.5 }}
-      >
-        <svg 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="1.5" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
-          className="w-full h-full drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
-        >
-          <path d="M18 11l-5-5m5 5l-8 8H5v-5l8-8m5 5l-5-5m0 0L7 11m6-5l2 2" />
-          <path d="M13 6l2 2" />
-        </svg>
-      </motion.div>
-
+    <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
       {/* Paint Splashes */}
       <AnimatePresence>
         {splashes.map((splash) => (
-          <motion.div
-            key={splash.id}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.5, filter: 'blur(10px)' }}
-            className="absolute"
-            style={{ left: splash.x, top: splash.y }}
-          >
-            {/* Artistic Radiating Drops */}
-            {[...Array(6)].map((_, i) => (
+          <div key={splash.id} className="absolute" style={{ left: splash.x, top: splash.y }}>
+            {[...Array(8)].map((_, i) => (
               <motion.div
                 key={i}
-                initial={{ x: 0, y: 0 }}
+                initial={{ x: 0, y: 0, scale: 0, opacity: 0.8 }}
                 animate={{ 
-                  x: (Math.random() - 0.5) * 100, 
-                  y: (Math.random() - 0.5) * 100,
-                  scale: 0
+                  x: (Math.random() - 0.5) * 120, 
+                  y: (Math.random() - 0.5) * 120,
+                  scale: [0, 1.5, 0],
+                  opacity: 0
                 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className={`absolute w-2 h-2 rounded-full ${i % 2 === 0 ? 'bg-gold-accent' : 'bg-primary-blue'}`}
+                className="absolute w-3 h-3 rounded-full"
+                style={{ backgroundColor: splash.color }}
               />
             ))}
-            {/* Core Splash */}
-            <motion.div 
-              initial={{ scale: 0 }}
-              animate={{ scale: [1, 1.2, 1] }}
-              className="w-4 h-4 bg-gold-accent/40 rounded-full -translate-x-1/2 -translate-y-1/2 blur-sm"
-            />
-          </motion.div>
+          </div>
         ))}
       </AnimatePresence>
+
+      {/* Brush Cursor */}
+      <motion.div
+        className="fixed top-0 left-0 w-10 h-10 flex items-center justify-center pointer-events-none"
+        animate={{
+          x: mousePos.x - 20,
+          y: mousePos.y - 20,
+          rotate: isClicking ? -20 : 0,
+          scale: isClicking ? 0.9 : 1,
+        }}
+        transition={{ type: 'spring', damping: 30, stiffness: 500, mass: 0.5 }}
+      >
+        <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-gold-accent drop-shadow-lg">
+          <path 
+            d="M18 11l-5-5m5 5l-8 8H5v-5l8-8m5 5l-5-5m0 0L7 11m6-5l2 2" 
+            stroke="currentColor" 
+            strokeWidth="1.5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          />
+          <motion.path 
+            d="M5 19l2-2" 
+            stroke="currentColor" 
+            strokeWidth="2.5" 
+            animate={{ opacity: isClicking ? 1 : 0.4 }}
+          />
+        </svg>
+      </motion.div>
     </div>
   );
 };
