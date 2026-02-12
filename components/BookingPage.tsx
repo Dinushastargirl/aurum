@@ -210,7 +210,7 @@ const BookingPage: React.FC = () => {
                 </div>
 
                 <p className="text-[10px] text-white/20 text-center tracking-widest leading-relaxed">
-                  Alternatively, use Fresha for instant confirmation.
+                  Alternatively, use Fresha for instant confirmation and easy booking.
                 </p>
               </motion.form>
             )}
